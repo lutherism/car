@@ -1,0 +1,26 @@
+{
+  "name": "car",
+  "version": "1.0.0",
+  "description": "car game",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lutherism/car.git"
+  },
+  "author": "lutherism",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lutherism/car/issues"
+  },
+  "homepage": "https://github.com/lutherism/car#readme",
+  "dependencies": {
+    "gpio": "^0.2.7",
+    "i2c-bus": "^3.0.0",
+    "pca9685": "^4.0.3",
+    "pi-gpio": "0.0.8",
+    "stopwatch": "^0.2.0"
+  }
+}
