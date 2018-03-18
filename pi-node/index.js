@@ -1,13 +1,7 @@
-const raspi = require('raspi');
-const gpio = require('raspi-gpio');
+var gpio = require("pi-gpio");
 
-raspi.init(() => {
-  const input = new gpio.DigitalInput({
-    pin: 'P1-3',
-    pullResistor: gpio.PULL_UP
-  });
-
-  const output = new gpio.DigitalOutput('P1-5');
-
-  output.write(input.read());
+gpio.open(16, "output", function(err) {		// Open pin 16 for output
+    gpio.write(16, 1, function() {			// Set pin 16 high (1)
+        gpio.close(16);						// Close pin 16
+    });
 });
