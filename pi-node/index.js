@@ -1,19 +1,43 @@
 var gpio = require("gpio");
-var Gpio = require('pigpio').Gpio,
-  motor = new Gpio(10, {mode: Gpio.OUTPUT}),
-  pulseWidth = 1000,
-  increment = 100;
+var i2cBus = require("i2c-bus");
+var Pca9685Driver = require("pca9685").Pca9685Driver;
+
+var options = {
+    i2c: i2cBus.openSync(1),
+    address: 0x40,
+    frequency: 50,
+    debug: false
+};
+const pwm = new Pca9685Driver(options, function(err) {
+    if (err) {
+        console.error("Error initializing PCA9685");
+        process.exit(-1);
+    }
+    console.log("Initialization done");
+
+    // Set the pulse length to 1500 microseconds for channel 2
+    pwm.setPulseLength(4, 1500);
+
+    // Set the duty cycle to 25% for channel 8
+    pwm.setDutyCycle(4, 0.25);
+
+    // Turn off all power to channel 6
+    // (with optional callback)
+    pwm.channelOff(4, function() {
+        if (err) {
+            console.error("Error turning off channel.");
+        } else {
+            console.log("Channel 6 is off.");
+        }
+    });
+});
+
 
 const MOTORS = {
   '1a': 11,
   '1b': 12,
   '2a': 13,
   '2b': 15
-};
-
-const PINS = {
-  '1': 4,
-  '2': 5
 };
 
 Promise.all(Object.keys(MOTORS).map(motorKey => {
