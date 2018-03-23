@@ -1,4 +1,4 @@
-import {combineReducers} from 'react-redux';
+import {combineReducers} from 'redux';
 import robotReducer from './robot';
 
 export default combineReducers({

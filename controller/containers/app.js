@@ -1,5 +1,6 @@
 import AppComponent from '../components/app';
 import createStore from '../store';
+import React from 'react';
 
 function createProps() {
   return {

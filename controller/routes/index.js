@@ -1,5 +1,5 @@
-import intiRobotRoutes from './robot';
+var intiRobotRoutes = require('./robot');
 
-export default function intiRoutes(server) {
+module.exports = function intiRoutes(server) {
   intiRobotRoutes(server);
 }

@@ -1,38 +1,36 @@
-import request from 'request';
-import {setInterval, clearInterval} from 'timers';
+var request = require('request');
+var timers = require('timers');
+var setInterval = timers.setInterval;
+var clearInterval = timers.clearInterval;/*
+var RobotController = require('../../pi-node/robot-controller');
+var RobotActions = require('../../pi-node/actions');*/
 
+//console.log(RobotController);
 const ROBOT_IP = '127.20.70.1';
 const ROBOT_PORT = 8080;
 
-function watchRobotState(cb) {
-  setInterval(() => {
-    request({
-      uri: `http://${ROBOT_IP}:${ROBOT_PORT}/state`
-    }, (err, resp) => {
-      if (err) {
-        return console.error('FAILURE GETTING ROBOT DATA', err);
-      }
-      return cb(resp.body);
-    });
-  }, 200);
-}
+module.exports = (server) => {
+  var latestState = {};
+  var robotController;
+  /*RobotController.init().then(robotControllerAsync => {
+    robotController = robotControllerAsync;
+  });*/
 
-export default function intiRobotRoutes(server) {
-  let latestState = {};
+  server.post('/eval', (req, res) => {
+    const {scriptToRun} = req.body;
 
-  watchRobotState(state => {
-    latestState = state;
-  });
+    console.log('eval', RobotActions, robotController);
+    function scriptEval() {
+      eval(`var RobotActions = this;` + scriptToRun);
+    }
+    scriptEval.call(Object.keys(RobotActions).reduce((a, k) => {
+      a[k] = (arg) => {
+        console.log('Acting', k, arg, robotController);
+        RobotActions[k](arg)(robotController);
+      };
+      return a;
+    }, {}))
 
-  app.get('/robot-stream', (req, resp) => {
-    let lastSentState = null;
-    const interval = setInterval(() => {
-      if (lastSentState !== latestState) {
-        lastSentState = latestState;
-        resp.send(latestState);
-      }
-    }, 200);
-
-    req.on('close', () => clearInterval(interval))
-  });
-}
+    res.send(200);
+  })
+};

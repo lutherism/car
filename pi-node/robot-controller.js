@@ -16,7 +16,8 @@ var options = {
     debug: true
 };
 
-Promise.all([
+module.exports = {
+  init: () => Promise.all([
     new Promise((resolve, reject) => {
       const pwm = new Pca9685Driver(options, function(err) {
         if (err) {
@@ -30,23 +31,13 @@ Promise.all([
     Promise.all(Object.keys(MOTORS).map(motorKey => {
       return new Promise((resolve, reject) => {
         const motor = gpio.export(MOTORS[motorKey], {
-           // When you export a pin, the default direction is out. This allows you to set
-           // the pin value to either LOW or HIGH (3.3V) from your program.
            direction: 'out',
-
-           // set the time interval (ms) between each read when watching for value changes
-           // note: this is default to 100, setting value too low will cause high CPU usage
            interval: 400,
-
-           // Due to the asynchronous nature of exporting a header, you may not be able to
-           // read or write to the header right away. Place your logic in this ready
-           // function to guarantee everything will get fired properly
            ready: function() {
              resolve(motor);
            }
          });
        });
     }))
-  ]).then(([pwm, motors]) => {
-    Actions.square()({pwm, motors});
-  })
+  ]).then(([pwm, motors]) => ({pwm, motors}))
+};

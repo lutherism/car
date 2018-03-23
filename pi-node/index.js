@@ -43,6 +43,10 @@ const pwm = new Pca9685Driver(options, function(err) {
     s.r = () => {
       pwm.setPulseLength(0, 1650);
     }
+    s.sp = (speed) => {
+      pwm.setPulseLength(4, speed);
+      pwm.setPulseLength(5, speed);
+    }
     s.f = () => {
       s.motors[0].set(0);
       s.motors[1].set();
@@ -56,10 +60,10 @@ const pwm = new Pca9685Driver(options, function(err) {
       s.motors[3].set(0);
     }
     s.b = () => {
-      s.motors[0].set(0);
-      s.motors[1].set();
-      s.motors[2].set(0);
-      s.motors[3].set();
+      s.motors[0].set();
+      s.motors[1].set(0);
+      s.motors[2].set();
+      s.motors[3].set(0);
     }
 });
 

@@ -2,7 +2,7 @@ import reduceReducers from 'reduce-reducers';
 
 const defaultState = {};
 
-export default function reduceReducers(
+export default reduceReducers(
   (state, action) => state || defaultState,
   function robotStreamReducer(state, action) {
     switch (action.type) {
@@ -30,4 +30,4 @@ export default function reduceReducers(
       return state;
     }
   }
-)''
+)

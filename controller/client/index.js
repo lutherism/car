@@ -1,5 +1,5 @@
 import {render} from 'react-dom';
-import App from './containers/app';
-import document from 'global/document';
+import {createElement} from 'react';
+import App from '../containers/app';
 
-render(<App />, document.querySelector('#aoo-container'));
+render(createElement(App), document.querySelector('#app-container'));
