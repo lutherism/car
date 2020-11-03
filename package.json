@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "description": "car game",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "app": "node ./controller/server/app.js"
   },
   "repository": {
     "type": "git",
@@ -17,13 +19,16 @@
   },
   "homepage": "https://github.com/lutherism/car#readme",
   "dependencies": {
+    "antd": "^3.10.7",
     "babel-preset-env": "^1.6.1",
     "babel-preset-stage-2": "^6.24.1",
     "body-parser": "^1.18.2",
     "brace": "^0.11.1",
+    "browser-pack": "^6.1.0",
     "browserify": "^16.1.1",
     "del": "^3.0.0",
     "express": "^4.16.3",
+    "fetch": "^1.1.0",
     "gpio": "^0.2.7",
     "gulp": "^3.9.1",
     "gulp-sourcemaps": "^2.6.4",
@@ -32,6 +37,8 @@
     "gulplog": "^1.0.0",
     "i2c-bus": "^3.0.0",
     "morgan": "^1.9.0",
+    "next": "^7.0.2",
+    "opencv4nodejs": "^4.10.1",
     "pca9685": "^4.0.3",
     "pi-gpio": "0.0.8",
     "react": "^16.2.0",
@@ -43,9 +50,11 @@
     "redux": "^3.7.2",
     "request": "^2.85.0",
     "run-sequence": "^2.2.1",
+    "socket.io": "^2.1.1",
     "stopwatch": "^0.2.0",
     "vinyl-buffer": "^1.0.1",
-    "vinyl-source-stream": "^2.0.0"
+    "vinyl-source-stream": "^2.0.0",
+    "websocket": "^1.0.32"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
