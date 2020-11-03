@@ -1,8 +1,4 @@
-function Stopwatch() {
-  return this;
-}
-
-Stopwatch.prototype.time = function time(ms) {
+function wait(ms) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve();
@@ -53,7 +49,7 @@ function stop() {
 /*
 *
 */
- function turn(d) {
+function turn(d) {
   const waveFreq = ((d / 100) * 350) + 1500;
   return (robot) => {
     return Promise.resolve(
@@ -88,41 +84,31 @@ function init() {
 }
 
 function square() {
-  const stopwatch = new Stopwatch();
-  const STRAIGHT_TIME = 1000;
-  const TURN_TIME = 1700;
   return (robot) => {
-
     return init()(robot)
       .then(() => straight()(robot))
       .then(() => forward()(robot))
       .then(() => slow()(robot))
-      .then(() => stopwatch.time(STRAIGHT_TIME))
-      .then(() => right()(robot))
-      .then(() => slow()(robot))
-      .then(() => stopwatch.time(TURN_TIME))
-      .then(() => straight()(robot))
-      .then(() => stopwatch.time(STRAIGHT_TIME))
-      .then(() => right()(robot))
-      .then(() => slow()(robot))
-      .then(() => stopwatch.time(TURN_TIME))
-      .then(() => straight()(robot))
-      .then(() => stopwatch.time(STRAIGHT_TIME))
-      .then(() => right()(robot))
-      .then(() => slow()(robot))
-      .then(() => stopwatch.time(TURN_TIME))
-      .then(() => straight()(robot))
-      .then(() => stopwatch.time(STRAIGHT_TIME))
-      .then(() => right()(robot))
-      .then(() => slow()(robot))
-      .then(() => stopwatch.time(TURN_TIME))
-      .then(() => straight()(robot))
+      .then(() => corner(right)(robot))
+      .then(() => corner(right)(robot))
+      .then(() => corner(right)(robot))
       .then(() => stop()(robot))
   }
 }
 
+function corner(turn) {
+  const STRAIGHT_TIME = 1000;
+  const TURN_TIME = 1700;
+  return (robot) => {
+    return wait(STRAIGHT_TIME)
+      .then(() => turn()(robot))
+      .then(() => slow()(robot))
+      .then(() => wait(TURN_TIME))
+      .then(() => straight()(robot))
+  }
+}
+
 function threePointTurn() {
-  const stopwatch = new Stopwatch();
   const STRAIGHT_TIME = 600;
   const TURN_TIME = 3000;
   return (robot) => {
@@ -131,29 +117,29 @@ function threePointTurn() {
       .then(() => left()(robot))
       .then(() => slow()(robot))
       .then(() => reverse()(robot))
-      .then(() => stopwatch.time(TURN_TIME))
+      .then(() => wait(TURN_TIME))
       .then(() => straight()(robot))
       .then(() => stop()(robot))
   }
 }
 
 function testAction() {
-  const stopwatch = new Stopwatch();
   return (robot) => {
     return threePointTurn()(robot)
       .then(() => forward()(robot))
       .then(() => fast()(robot))
-      .then(() => stopwatch.time(1000))
+      .then(() => wait(1000))
       .then(() => threePointTurn()(robot))
       .then(() => reverse()(robot))
       .then(() => threePointTurn()(robot))
       .then(() => slow()(robot))
       .then(() => forward()(robot))
       .then(() => turn(-40)(robot))
-      .then(() => stopwatch.time(8000))
+      .then(() => wait(8000))
+      .then(() => square()(robot))
       .then(() => stop()(robot))
   }
 }
 
 module.exports = {left, right, straight, threePointTurn, testAction,
-  fast, slow, speed, square, turn, stop, forward, reverse};
+  fast, slow, speed, square, turn, init, stop, forward, reverse, wait};
