@@ -1,7 +1,6 @@
-var gpio = require("gpio");
-var i2cBus = require("i2c-bus");
-var Pca9685Driver = require("pca9685").Pca9685Driver;
-const repl = require('repl');
+import gpio from "gpio";
+import i2cBus from "i2c-bus";
+import repl from 'repl';
 
 var options = {
     i2c: i2cBus.openSync(1),
