@@ -1,6 +1,6 @@
-import gpio from "gpio";
-import i2cBus from "i2c-bus";
-import repl from 'repl';
+var gpio = require("gpio");
+var i2cBus = require("i2c-bus");
+var repl = require('repl');
 
 var options = {
     i2c: i2cBus.openSync(1),
