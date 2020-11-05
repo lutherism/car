@@ -18,6 +18,9 @@ const COIL_PINS = [
 const orders = [
   [0, 1, 2, 3]
 ];
+let mototsContext = [];
+let order = 0;
+let ActiveCoil = 0;
 
 Promise.all(Object.keys(COIL_PINS).map(motorKey => {
   return new Promise((resolve, reject) => {
@@ -39,8 +42,7 @@ Promise.all(Object.keys(COIL_PINS).map(motorKey => {
      });
    });
 })).then(motors => {
-  let order = 0;
-  let ActiveCoil = 0;
+  mototsContext = motors;
   setInterval(() => {
     const orderMappedCoilI = orders[order][ActiveCoil]
     motors.map((m, i) => {
@@ -53,4 +55,4 @@ Promise.all(Object.keys(COIL_PINS).map(motorKey => {
 });
 
 
-repl.start('> ').context.s = s;
+repl.start('> ').context.motors = motorsContext;
