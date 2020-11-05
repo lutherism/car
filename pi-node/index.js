@@ -10,10 +10,10 @@ var options = {
 };
 
 const COIL_PINS = [
-  17,
-  18,
-  27,
-  22
+  10,
+  9,
+  11,
+  25
 ];
 const orders = [
   [0, 1, 2, 3]
