@@ -18,7 +18,7 @@ const COIL_PINS = [
 const orders = [
   [0, 1, 2, 3]
 ];
-let mototsContext = [];
+let motorsContext = [];
 let order = 0;
 let ActiveCoil = 0;
 
