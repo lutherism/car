@@ -50,7 +50,7 @@ Promise.all(Object.keys(COIL_PINS).map(motorKey => {
     });
     ActiveCoil = (ActiveCoil + 1) % COIL_PINS.length;
     order = (order + 1) % orders.length;
-    console.log(motors.map(m => m.value));
+    console.log(motors.map((m, i) => ([m.value, m])));
   }, 50);
 });
 
