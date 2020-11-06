@@ -1,5 +1,5 @@
-import websocket from 'websocket';
-import fs from 'fs';
+var websocket = require('websocket');
+var fs = require('fs');
 const {w3cwebsocket: W3CWebSocket} = websocket;
 
 var client = new W3CWebSocket('ws://robots-gateway.uc.r.appspot.com/', 'echo-protocol');

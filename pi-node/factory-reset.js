@@ -1,6 +1,6 @@
-import fs from 'fs';
-import uuid from 'uuid';
-import request from 'request';
+var fs = require('fs');
+var uuid = require('uuid');
+var request = require('request');
 
 const DEFAULT_DEVICE_UUID = '6be50aff-6f10-4643-bfda-7d5bf15319c9';
 
