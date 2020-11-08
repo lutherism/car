@@ -9,7 +9,7 @@ BASEDIR=$(dirname "$0")
 export DISPLAY=:0 #needed if you are running a simple gui app.
 
 process="v8.17.0/bin/node"
-makerun="/root/.nvm/versions/node/v8.17.0/bin/node $BASEDIR/pi-node/keep-alive.js"
+makerun="sudo /root/.nvm/versions/node/v8.17.0/bin/node $BASEDIR/pi-node/keep-alive.js"
 
 echo Running $makerun
 
