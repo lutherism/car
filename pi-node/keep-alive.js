@@ -52,7 +52,7 @@ recursiveConnect();
 let DeviceData = {};
 
 
-DeviceData = JSON.parse(fs.readFileSync('./openroboticsdata/data.json'));
+DeviceData = JSON.parse(fs.readFileSync(__dirname + '/openroboticsdata/data.json'));
 
 function keepOpenGatewayConnection() {
   return new Promise((resolve, reject) => {
