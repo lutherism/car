@@ -16,7 +16,7 @@ const COIL_PINS = [
   27
 ];
 const orders = [
-  [0, 1, 3, 2],
+  //[0, 1, 3, 2],
   [2, 3, 1, 0]
 ];
 let motorsContext = [];
