@@ -38,6 +38,7 @@
     "i2c-bus": "^3.0.0",
     "morgan": "^1.9.0",
     "next": "^7.0.2",
+    "node-pty": "^0.9.0",
     "opencv4nodejs": "^4.10.1",
     "pca9685": "^4.0.3",
     "pi-gpio": "0.0.8",
@@ -49,12 +50,18 @@
     "reduce-reducers": "^0.1.2",
     "redux": "^3.7.2",
     "request": "^2.85.0",
+    "reverse-wstunnel": "^1.2.2",
     "run-sequence": "^2.2.1",
     "socket.io": "^2.1.1",
     "stopwatch": "^0.2.0",
+    "through": "^2.3.8",
+    "tunnel-ssh": "^4.1.4",
     "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^2.0.0",
-    "websocket": "^1.0.32"
+    "websocket": "^1.0.32",
+    "websocket-stream": "^5.5.2",
+    "ws": "^7.3.1",
+    "ws-streamify": "^0.1.4"
   },
   "engines": {
     "node": "8.x"
