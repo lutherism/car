@@ -5,6 +5,7 @@ BASEDIR=$(dirname "$0")
 /home/pi/.config/nvm/nvm.sh use 8
 
 #!/bin/bash
+mkdir tmp
 echo $(date) Run >> $BASEDIR/tmp/reboot.log
 export DISPLAY=:0 #needed if you are running a simple gui app.
 
