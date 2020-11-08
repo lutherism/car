@@ -2,7 +2,7 @@
 
 BASEDIR=$(dirname "$0")
 ~/.nvm/nvm.sh use 8
-/home/pi/.config/nvm use 8
+/home/pi/.config/nvm/nvm.sh use 8
 
 #!/bin/bash
 
