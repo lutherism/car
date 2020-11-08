@@ -18,7 +18,7 @@ then
     echo 'Already running';
     exit
 else
-    echo sudo -u pi $makerun | bash
+    echo $makerun | bash
 fi
 
 exit
