@@ -8,6 +8,9 @@ const { Duplex } = require('stream');
 
 var shell = os.platform() === 'win32' ? 'powershell.exe' : 'bash';
 
+const WS_URL = process.env.NODE_ENV === 'local' ?
+  'ws://localhost:3001' : 'wss://robots-gateway.uc.r.appspot.com/';
+
 var ptyProcess = pty.spawn(shell, [], {
   name: 'xterm-color',
   cols: 80,
@@ -54,7 +57,7 @@ DeviceData = JSON.parse(fs.readFileSync('./openroboticsdata/data.json'));
 function keepOpenGatewayConnection() {
   return new Promise((resolve, reject) => {
     try {
-      const client = new WebSocket('ws://localhost:3001', 'ssh-protocol');
+      const client = new WebSocket(WS_URL, 'ssh-protocol');
       //console.log(client.on)
       var clientStream = WebSocket.createWebSocketStream(client);
       clientStream.on('error', () => {});
@@ -64,7 +67,7 @@ function keepOpenGatewayConnection() {
       });
 
       client.onopen = function() {
-          console.log('WebSocket Client Connected');
+          console.log(`WebSocket Client Connected to ${WS_URL}`);
           if (client.readyState === client.OPEN) {
             ptyProcess.on('data', (data) => {
               client.send(data);
