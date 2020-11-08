@@ -18,7 +18,7 @@ then
     echo 'Already running';
     exit
 else
-    $makerun
+    echo $makerun | bash
 fi
 
 exit
