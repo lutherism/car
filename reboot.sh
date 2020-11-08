@@ -1,9 +1,3 @@
-#!/usr/bin/env bash
-
-BASEDIR=$(dirname "$0")
-~/.nvm/nvm.sh use 8
-node $BASEDIR/pi-node/keep-alive.js
-
 #!/bin/bash
 
 export DISPLAY=:0 #needed if you are running a simple gui app.
