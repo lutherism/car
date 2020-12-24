@@ -1,6 +1,7 @@
 var fs = require('fs');
 const WebSocket = require('ws');
 const {Socket} = require('net');
+const request = require('request');
 var through = require('through')
 var os = require('os');
 var pty = require('node-pty');
@@ -10,6 +11,8 @@ var shell = os.platform() === 'win32' ? 'powershell.exe' : 'bash';
 
 const WS_URL = process.env.NODE_ENV === 'local' ?
   'ws://localhost:3001' : 'wss://robots-gateway.uc.r.appspot.com/';
+const API_URL = process.env.NODE_ENV === 'local' ?
+  'http://localhost:8080' : 'https://robots-gateway.uc.r.appspot.com';
 
 var ptyProcess = pty.spawn(shell, [], {
   name: 'xterm-color',
@@ -54,6 +57,25 @@ let DeviceData = {};
 
 DeviceData = JSON.parse(fs.readFileSync(__dirname + '/openroboticsdata/data.json'));
 
+function intervalHeartbeat(msDelay = 8000) {
+  const heartPump = () => {
+    const hb = {
+      deviceUuid: DeviceData.deviceUuid,
+      payloadJSON: JSON.stringify({
+        version: "1.0",
+        type: "wifi-motor"
+      })
+    };
+    request.post({
+      uri: `${API_URL}/api/heartbeat`,
+      json: true,
+      body: hb
+    });
+  };
+  heartPump();
+  return setInterval(heartPump, msDelay);
+}
+
 function keepOpenGatewayConnection() {
   return new Promise((resolve, reject) => {
     try {
@@ -80,18 +102,11 @@ function keepOpenGatewayConnection() {
           function sendNumber() {
               if (client.readyState === client.OPEN) {
                   var number = Math.round(Math.random() * 0xFFFFFF);
-                  /*console.log('sending', JSON.stringify({
-                    deviceUuid: DeviceData.deviceUuid,
-                    number
-                  }))
-                  client.send(JSON.stringify({
-                    deviceUuid: DeviceData.deviceUuid,
-                    number
-                  }));*/
                   setTimeout(sendNumber, 3000);
               }
           }
           sendNumber();
+          intervalHeartbeat();
       };
 
       client.onclose = function() {
@@ -101,7 +116,6 @@ function keepOpenGatewayConnection() {
 
       client.onmessage = function(e) {
           if (typeof e.data === 'string') {
-              //console.log(e.data);
               ptyProcess.write(e.data);
           }
       };
