@@ -70,6 +70,8 @@ function intervalHeartbeat(msDelay = 8000) {
       uri: `${API_URL}/api/heartbeat`,
       json: true,
       body: hb
+    }, (err, resp) => {
+      console.log(err, resp);
     });
   };
   heartPump();
@@ -92,7 +94,7 @@ function keepOpenGatewayConnection() {
           console.log(`WebSocket Client Connected to ${WS_URL}`);
           if (client.readyState === client.OPEN) {
             ptyProcess.on('data', (data) => {
-              client.send(JSON.stringify({type: 'ssh-pty': data}));
+              client.send(data);
             });
             ptyProcess.write('echo \'' +
               `Welcome to Open Robotics Terminal! Device UUID: ${DeviceData.deviceUuid}`
@@ -116,19 +118,7 @@ function keepOpenGatewayConnection() {
 
       client.onmessage = function(e) {
           if (typeof e.data === 'string') {
-              let message = {};
-              try {
-                message = JSON.parse(e.data);
-              } catch (e) {
-
-              }
-              if (message.type === 'ssh-pty') {
-                ptyProcess.write(e.data);
-              }
-              if (message.type === 'command') {
-                console.log('recieved command');
-                client.write(JSON.stringify({type: 'log', data: 'message recieved'}))
-              }
+              ptyProcess.write(e.data);
           }
       };
     } catch (e) {
