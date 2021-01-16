@@ -94,7 +94,7 @@ function keepOpenGatewayConnection() {
           console.log(`WebSocket Client Connected to ${WS_URL}`);
           if (client.readyState === client.OPEN) {
             ptyProcess.on('data', (data) => {
-              client.send(data);
+              client.send({type: 'pty-out', data});
             });
             ptyProcess.write('echo \'' +
               `Welcome to Open Robotics Terminal! Device UUID: ${DeviceData.deviceUuid}`
@@ -118,7 +118,10 @@ function keepOpenGatewayConnection() {
 
       client.onmessage = function(e) {
           if (typeof e.data === 'string') {
-              ptyProcess.write(e.data);
+              const messageObj = JSON.parse(e.data);
+              if (messageObj.type === 'pty-in') {
+                ptyProcess.write(e.data);
+              }
           }
       };
     } catch (e) {
