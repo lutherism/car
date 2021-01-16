@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node ./src/tests/index.js",
     "app": "node ./controller/server/app.js"
   },
   "repository": {
@@ -33,6 +33,8 @@
     "gulp-uglify": "^3.0.0",
     "gulplog": "^1.0.0",
     "i2c-bus": "^3.0.0",
+    "leaked-handles": "^5.2.0",
+    "mock-require": "^3.0.3",
     "morgan": "^1.9.0",
     "node-pty": "^0.9.0",
     "pca9685": "^4.0.3",
@@ -44,6 +46,7 @@
     "redux": "^3.7.2",
     "request": "^2.85.0",
     "run-sequence": "^2.2.1",
+    "tape": "^5.1.1",
     "through": "^2.3.8",
     "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^2.0.0",
@@ -55,6 +58,7 @@
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-preset-react": "^6.3.13",
-    "babelify": "^8.0.0"
+    "babelify": "^8.0.0",
+    "tap-spec": "^5.0.0"
   }
 }

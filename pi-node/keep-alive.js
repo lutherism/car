@@ -1,6 +1,5 @@
 var fs = require('fs');
 const WebSocket = require('ws');
-const {Socket} = require('net');
 const request = require('request');
 var through = require('through')
 var os = require('os');
@@ -101,7 +100,7 @@ function keepOpenGatewayConnection() {
               + '`\'\r');
           }
 
-          intervalHeartbeat();
+          client.heartBeatInterval = intervalHeartbeat();
       };
 
       client.onclose = function() {
