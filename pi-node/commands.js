@@ -43,7 +43,7 @@ Promise.all(Object.keys(COIL_PINS).map(motorKey => {
      });
    });
 })).then(motors => {
-  mototsContext = motors;
+  motorsContext = motors;
 });
 
 const COMMANDS = {
