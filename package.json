@@ -7,7 +7,8 @@
   "scripts": {
     "test": "node ./src/tests/index.js",
     "app": "node ./controller/server/app.js",
-    "gitclean": "find .git/objects/ -type f -empty"
+    "gitclean": "find .git/objects/ -type f -empty",
+    "reset": "ps aux | grep node | grep keep-alive | awk '{ print $2 }'"
   },
   "repository": {
     "type": "git",
