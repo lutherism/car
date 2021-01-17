@@ -6,6 +6,8 @@ BASEDIR=$(dirname "$0")
 
 #!/bin/bash
 mkdir tmp
+touch tmp/reboot.log
+touch tmp/run.log
 echo $(date) Run >> $BASEDIR/tmp/reboot.log
 export DISPLAY=:0 #needed if you are running a simple gui app.
 
