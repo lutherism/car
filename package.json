@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "node ./src/tests/index.js",
-    "app": "node ./controller/server/app.js"
+    "app": "node ./controller/server/app.js",
+    "gitclean": "find .git/objects/ -type f -empty"
   },
   "repository": {
     "type": "git",
