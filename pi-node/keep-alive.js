@@ -96,6 +96,7 @@ function keepOpenGatewayConnection() {
             ptyProcess.on('data', (data) => {
               client.send(JSON.stringify({type: 'pty-out', data}));
             });
+            ptyProcess.write('sudo -u pi -i && cd projects/car');
             ptyProcess.write('echo \'' +
               `Welcome to Open Robotics Terminal! Device UUID: ${DeviceData.deviceUuid}`
               + '`\'\r');
