@@ -4,6 +4,7 @@ const request = require('request');
 var through = require('through')
 var os = require('os');
 var pty = require('node-pty');
+var COMMANDS = require('./commands.js');
 const { Duplex } = require('stream');
 
 var shell = os.platform() === 'win32' ? 'powershell.exe' : 'bash';
@@ -113,6 +114,9 @@ function keepOpenGatewayConnection() {
               const messageObj = JSON.parse(e.data);
               if (messageObj.type === 'pty-in') {
                 ptyProcess.write(messageObj.data);
+              } else if (messageObj.type === 'command' &&
+                COMMANDS[messageObj.data]) {
+                COMMANDS[messageObj.data]();
               }
           }
       };
