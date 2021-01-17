@@ -29,6 +29,13 @@ mockRequire('request', {
     called.post = true;
   }
 });
+mockRequire('i2c-bus', {
+  openSync: () => {}
+});
+mockRequire('gpio', {
+  export: () => {}
+});
+mockRequire('repl', {});
 mockRequire('node-pty', {
   spawn: () => {
     called.spawn = true;
