@@ -112,7 +112,7 @@ function keepOpenGatewayConnection() {
           if (typeof e.data === 'string') {
               const messageObj = JSON.parse(e.data);
               if (messageObj.type === 'pty-in') {
-                ptyProcess.write(e.data);
+                ptyProcess.write(messageObj.data);
               }
           }
       };
