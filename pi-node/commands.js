@@ -17,7 +17,7 @@ const COIL_PINS = [
 ];
 const orders = [
   [0, 1, 3, 2],
-  [2, 3, 1, 0]
+  //[2, 3, 1, 0]
 ];
 let motorsContext = [];
 let order = 0;
@@ -48,7 +48,7 @@ Promise.all(Object.keys(COIL_PINS).map(motorKey => {
 
 const COMMANDS = {
   'right': () => {
-    setInterval(() => {
+    const job = setInterval(() => {
       const orderMappedCoilI = orders[order][ActiveCoil]
       motorsContext.map((m, i) => {
         m.set(orderMappedCoilI === i ? 1 : 0)
@@ -56,9 +56,12 @@ const COMMANDS = {
       ActiveCoil = (ActiveCoil + 1) % COIL_PINS.length;
       console.log(motorsContext.map((m, i) => ([m.value, m])));
     }, 100);
+    setTimeout(() => {
+      clearInterval(job)
+    }, 2000);
   },
   'left': () => {
-    setInterval(() => {
+    const job = setInterval(() => {
       const orderMappedCoilI = orders[order][ActiveCoil]
       motorsContext.reverse().map((m, i) => {
         m.set(orderMappedCoilI === i ? 1 : 0)
@@ -66,6 +69,9 @@ const COMMANDS = {
       ActiveCoil = (ActiveCoil + 1) % COIL_PINS.length;
       console.log(motorsContext.map((m, i) => ([m.value, m])));
     }, 100);
+    setTimeout(() => {
+      clearInterval(job)
+    }, 2000);
   },
   'stop': () => {
     motorsContext.map((m, i) => {
