@@ -8,12 +8,11 @@ BASEDIR=$(dirname "$0")
 mkdir tmp
 touch tmp/reboot.log
 touch tmp/run.log
-chmod 777 tmp/run.log
 echo $(date) Run >> $BASEDIR/tmp/reboot.log
 export DISPLAY=:0 #needed if you are running a simple gui app.
 
 process="v8.17.0/bin/node"
-makerun="sudo /root/.nvm/versions/node/v8.17.0/bin/node $BASEDIR/pi-node/keep-alive.js >> /tmp/run.log"
+makerun="sudo /root/.nvm/versions/node/v8.17.0/bin/node $BASEDIR/pi-node/keep-alive.js >> tmp/run.log"
 
 echo Running $makerun
 
