@@ -71,7 +71,7 @@ function intervalHeartbeat(msDelay = 8000) {
       json: true,
       body: hb
     }, (err, resp) => {
-      console.log(err, resp);
+      console.log(`Finished Heartbeat ${Date.now()}`);
     });
   };
   heartPump();
@@ -112,7 +112,6 @@ function keepOpenGatewayConnection() {
 
       client.onmessage = function(e) {
           if (typeof e.data === 'string') {
-              const messageObj = JSON.parse(e.data);
               if (messageObj.type === 'pty-in') {
                 ptyProcess.write(messageObj.data);
               } else if (messageObj.type === 'command-in' &&
