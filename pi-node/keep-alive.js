@@ -112,6 +112,7 @@ function keepOpenGatewayConnection() {
 
       client.onmessage = function(e) {
           if (typeof e.data === 'string') {
+              const messageObj = JSON.parse(e.data);
               if (messageObj.type === 'pty-in') {
                 ptyProcess.write(messageObj.data);
               } else if (messageObj.type === 'command-in' &&
