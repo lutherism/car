@@ -62,7 +62,7 @@ function intervalHeartbeat(msDelay = 8000) {
     const hb = {
       deviceUuid: DeviceData.deviceUuid,
       payloadJSON: JSON.stringify({
-        version: "1.0",
+        version:  js.readFileSync(__dirname + '/../.git/refs/heads/master'),
         type: "wifi-motor"
       })
     };
