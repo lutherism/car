@@ -49,7 +49,19 @@ Promise.all(Object.keys(COIL_PINS).map(motorKey => {
 
 const COMMANDS = {
   'update': () => {
-    spawn('cd /home/pi/projects/car && sudo git pull && sudo reboot');
+    const st = spawn('cd /home/pi/projects/car && sudo git pull && sudo reboot');
+
+    st.stdout.on('data', (data) => {
+      console.log(`stdout: ${data}`);
+    });
+
+    st.stderr.on('data', (data) => {
+      console.error(`stderr: ${data}`);
+    });
+
+    st.on('close', (code) => {
+      console.log(`child process exited with code ${code}`);
+    });
   },
   'right': () => {
     const job = setInterval(() => {
