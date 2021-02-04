@@ -1,6 +1,7 @@
 var gpio = require("gpio");
 var i2cBus = require("i2c-bus");
 var repl = require('repl');
+const { spawn } = require('child_process');
 
 var options = {
     i2c: i2cBus.openSync(1),
@@ -47,6 +48,9 @@ Promise.all(Object.keys(COIL_PINS).map(motorKey => {
 });
 
 const COMMANDS = {
+  'update': () => {
+    spawn('cd /user/raspberrypi/projects/car && sudo git pull && sudo reboot');
+  },
   'right': () => {
     const job = setInterval(() => {
       const orderMappedCoilI = orders[order][ActiveCoil]

@@ -35,6 +35,8 @@
     "gulp-uglify": "^3.0.0",
     "gulplog": "^1.0.0",
     "i2c-bus": "^3.0.0",
+    "koa": "^2.13.1",
+    "koa-static": "^5.0.0",
     "leaked-handles": "^5.2.0",
     "mock-require": "^3.0.3",
     "morgan": "^1.9.0",
