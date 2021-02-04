@@ -49,7 +49,7 @@ Promise.all(Object.keys(COIL_PINS).map(motorKey => {
 
 const COMMANDS = {
   'update': () => {
-    spawn('cd /user/raspberrypi/projects/car && sudo git pull && sudo reboot');
+    spawn('cd /home/pi/projects/car && sudo git pull && sudo reboot');
   },
   'right': () => {
     const job = setInterval(() => {
