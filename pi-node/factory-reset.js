@@ -17,6 +17,13 @@ fs.readFile('./openroboticsdata/data_template.json', data => {
       name: 'newborn'
     }
   }, (err, res) => {
-    console.log(err, res)
+    console.log(err, res);
+    setupCronJob();
   });
 });
+
+const cronPath = '/_cron/';
+
+function setupCronJob() {
+  exec(`sudo crontab -e ${__dirname}/reboot.cron`);
+}

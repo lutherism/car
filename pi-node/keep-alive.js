@@ -4,13 +4,13 @@ const request = require('request');
 var through = require('through')
 var os = require('os');
 var pty = require('node-pty');
-var COMMANDS = require('./commands.js');
+//var COMMANDS = require('./commands.js');
 const { Duplex } = require('stream');
 
 var shell = os.platform() === 'win32' ? 'powershell.exe' : 'bash';
 
 const WS_URL = process.env.NODE_ENV === 'local' ?
-  'ws://localhost:3001' : 'wss://robots-gateway.uc.r.appspot.com/';
+  'ws://localhost:8080/' : 'wss://robots-gateway.uc.r.appspot.com/';
 const API_URL = process.env.NODE_ENV === 'local' ?
   'http://localhost:8080' : 'https://robots-gateway.uc.r.appspot.com';
 
@@ -92,9 +92,13 @@ function keepOpenGatewayConnection() {
 
       client.onopen = function() {
           console.log(`WebSocket Client Connected to ${WS_URL}`);
+          client.send(JSON.stringify({type: 'identify-connection', deviceUuid: DeviceData.deviceUuid}));
           if (client.readyState === client.OPEN) {
             ptyProcess.on('data', (data) => {
-              client.send(JSON.stringify({type: 'pty-out', data}));
+              client.send(JSON.stringify({
+                type: 'pty-out',
+                data,
+                deviceUuid: DeviceData.deviceUuid}));
             });
             ptyProcess.write('sudo -u pi -i && cd projects/car');
             ptyProcess.write('echo \'' +
@@ -114,6 +118,7 @@ function keepOpenGatewayConnection() {
           if (typeof e.data === 'string') {
               const messageObj = JSON.parse(e.data);
               if (messageObj.type === 'pty-in') {
+                console.log('got data')
                 ptyProcess.write(messageObj.data);
               } else if (messageObj.type === 'command-in' &&
                 COMMANDS[messageObj.data]) {
