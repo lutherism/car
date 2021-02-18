@@ -23,5 +23,5 @@ fs.readFile('./openroboticsdata/data_template.json', data => {
 });
 
 function setupCronJob() {
-  exec(`sudo crontab ${__dirname}/reboot.cron`);
+  exec(`crontab ${__dirname}/reboot.cron`);
 }
