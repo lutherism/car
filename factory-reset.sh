@@ -12,6 +12,7 @@ echo $(date) Run >> $BASEDIR/tmp/reboot.log
 export DISPLAY=:0 #needed if you are running a simple gui app.
 
 process="v8.17.0/bin/node"
+makecron="crontab $BASEDIR/reboot.cron"
 makerun="node $BASEDIR/pi-node/factory-reset.js >> tmp/$LOGNAME"
 
 echo Running $makerun
@@ -21,6 +22,7 @@ then
     echo 'Already running';
     exit
 else
+    echo $makecron | bash
     echo $makerun | bash
 fi
 
