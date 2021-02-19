@@ -67,7 +67,7 @@ function intervalHeartbeat(msDelay = 8000) {
       })
     };
     request.post({
-      uri: `${API_URL}/api/heartbeat`,
+      uri: `${API_URL}/api/device/state`,
       json: true,
       body: hb
     }, (err, resp) => {
