@@ -54,8 +54,9 @@ recursiveConnect();
 
 let DeviceData = {};
 
-
 DeviceData = JSON.parse(fs.readFileSync(__dirname + '/openroboticsdata/data.json'));
+
+let interval = null;
 
 function intervalHeartbeat(msDelay = 8000) {
   const heartPump = () => {
@@ -75,7 +76,8 @@ function intervalHeartbeat(msDelay = 8000) {
     });
   };
   heartPump();
-  return setInterval(heartPump, msDelay);
+  clearInterval(interval);
+  interval = setInterval(heartPump, msDelay);
 }
 
 function keepOpenGatewayConnection() {
@@ -106,7 +108,7 @@ function keepOpenGatewayConnection() {
               + '`\'\r');
           }
 
-          client.heartBeatInterval = intervalHeartbeat();
+          intervalHeartbeat();
       };
 
       client.onclose = function() {
