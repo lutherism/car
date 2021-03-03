@@ -113,6 +113,7 @@ function keepOpenGatewayConnection() {
 
       client.onclose = function() {
           console.log('ssh-protocol Client Closed');
+          ptyProcess.kill();
           reject();
       };
 
