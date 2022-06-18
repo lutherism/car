@@ -93,6 +93,17 @@ const COMMANDS = {
     motorsContext.map((m, i) => {
       m.set(0)
     });
+  },
+  flicker: n => {
+    console.log(`flickering ${CoilPins[n]}`);
+    let i = 0;
+    const job = setInterval(() => {
+      motorsContext[n].set(i);
+      i = i + 1 - (i*2);
+    }, 100);
+    setTimeout(() => {
+      clearInterval(job)
+    }, 2000);
   }
 }
 
