@@ -134,7 +134,8 @@ const COMMANDS = {
     })).then(motors => {
       motorsContext = motors;
     });
-  }
+  },
+  motorsContext
 }
 
 COMMANDS.export();
