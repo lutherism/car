@@ -124,7 +124,7 @@ const COMMANDS = {
          ready: function() {
            console.log('starting flicker');
            const job = setInterval(() => {
-             motorsContext[n].set(i);
+             motor.set(i);
              i = i + 1 - (i*2);
            }, 100);
            setTimeout(() => {
