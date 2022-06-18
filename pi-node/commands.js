@@ -104,6 +104,36 @@ const COMMANDS = {
     setTimeout(() => {
       clearInterval(job)
     }, 2000);
+  },
+  gflicker: n => {
+    console.log(`flickering gpio ${n}`);
+    let i = 0;
+    new Promise((resolve, reject) => {
+      const motor = gpio.export(n, {
+         // When you export a pin, the default direction is out. This allows you to set
+         // the pin value to either LOW or HIGH (3.3V) from your program.
+         direction: 'out',
+
+         // set the time interval (ms) between each read when watching for value changes
+         // note: this is default to 100, setting value too low will cause high CPU usage
+         interval: 100,
+
+         // Due to the asynchronous nature of exporting a header, you may not be able to
+         // read or write to the header right away. Place your logic in this ready
+         // function to guarantee everything will get fired properly
+         ready: function() {
+           console.log('starting flicker');
+           const job = setInterval(() => {
+             motorsContext[n].set(i);
+             i = i + 1 - (i*2);
+           }, 100);
+           setTimeout(() => {
+             clearInterval(job);
+           }, 2000);
+         }
+       });
+     });
+
   }
 }
 
