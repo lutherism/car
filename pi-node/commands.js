@@ -95,7 +95,7 @@ const COMMANDS = {
     });
   },
   flicker: n => {
-    console.log(`flickering ${CoilPins[n]}`);
+    console.log(`flickering ${COIL_PINS[n]}`);
     let i = 0;
     const job = setInterval(() => {
       motorsContext[n].set(i);
