@@ -21,7 +21,7 @@ then
     exit
 else
     echo 'running.'
-    echo $makerun | bash
+    echo $makerun | bash &
 fi
 
 exit
