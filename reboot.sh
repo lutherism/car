@@ -11,7 +11,7 @@ echo $(date) Run >> $BASEDIR/tmp/reboot.log
 export DISPLAY=:0 #needed if you are running a simple gui app.
 
 process="node $BASEDIR/pi-node/keep-alive.js"
-makerun="node $BASEDIR/pi-node/keep-alive.js >> tmp/run.log"
+makerun="node $BASEDIR/pi-node/keep-alive.js >> $BASEDIR/tmp/run.log"
 
 echo Running $makerun
 
