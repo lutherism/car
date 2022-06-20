@@ -15,11 +15,12 @@ makerun="node $BASEDIR/pi-node/keep-alive.js >> $BASEDIR/tmp/run.log"
 
 echo Running $makerun
 
-if ps ax | grep -v grep | grep $process > /dev/null
+if ps ax | grep -v grep | grep "$process > /dev/null"
 then
     echo 'Already running';
     exit
 else
+    echo 'running.'
     echo $makerun | bash
 fi
 
