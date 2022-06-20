@@ -119,8 +119,8 @@ function keepOpenGatewayConnection() {
 
       client.onmessage = function(e) {
         if (typeof e.data === 'string') {
-          console.log('got data')
           const messageObj = JSON.parse(e.data);
+          console.log('got ws message', messageObj);
           if (messageObj.type === 'pty-in') {
 
             ptyProcess.write(messageObj.data);
