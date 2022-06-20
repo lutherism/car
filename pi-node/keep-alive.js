@@ -118,17 +118,18 @@ function keepOpenGatewayConnection() {
       };
 
       client.onmessage = function(e) {
-          if (typeof e.data === 'string') {
-              const messageObj = JSON.parse(e.data);
-              if (messageObj.type === 'pty-in') {
-                console.log('got data')
-                ptyProcess.write(messageObj.data);
-              } else if (messageObj.type === 'command-in' &&
-                COMMANDS[messageObj.data]) {
-                COMMANDS[messageObj.data]();
-                client.send(JSON.stringify({type: 'command-out', data: 'ok'}));
-              }
+        if (typeof e.data === 'string') {
+          console.log('got data')
+          const messageObj = JSON.parse(e.data);
+          if (messageObj.type === 'pty-in') {
+
+            ptyProcess.write(messageObj.data);
+          } else if (messageObj.type === 'command-in' &&
+            COMMANDS[messageObj.data]) {
+            COMMANDS[messageObj.data]();
+            client.send(JSON.stringify({type: 'command-out', data: 'ok'}));
           }
+        }
       };
     } catch (e) {
       console.log('error caught', e)
