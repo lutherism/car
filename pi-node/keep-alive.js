@@ -4,7 +4,7 @@ const request = require('request');
 var through = require('through')
 var os = require('os');
 var pty = require('node-pty');
-//var COMMANDS = require('./commands.js');
+var COMMANDS = require('./commands.js');
 const { Duplex } = require('stream');
 
 var shell = os.platform() === 'win32' ? 'powershell.exe' : 'bash';
