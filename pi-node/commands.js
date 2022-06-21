@@ -130,9 +130,10 @@ const COMMANDS = {
     }
     COMMANDS.export().then(() => {
       const diff = currentPos - angle;
+      let job;
       const timeToRotate = Math.floor(Math.abs(diff) * (200/360)) * 100;
       if (diff > 0) {
-        const job = setInterval(() => {
+        job = setInterval(() => {
           const orderMappedCoilI = orders[order][ActiveCoil]
           motorsContext.map((m, i) => {
             m.set(orderMappedCoilI === i ? 1 : 0)
@@ -140,7 +141,7 @@ const COMMANDS = {
           ActiveCoil = (ActiveCoil + 1) % COIL_PINS.length;
         }, 100);
       } else if (diff < 0) {
-        const job = setInterval(() => {
+        job = setInterval(() => {
           const orderMappedCoilI = orders[order][ActiveCoil]
           motorsContext.reverse().map((m, i) => {
             m.set(orderMappedCoilI === i ? 1 : 0)
