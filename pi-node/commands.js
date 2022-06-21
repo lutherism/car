@@ -23,6 +23,11 @@ const orders = [
 let motorsContext = [];
 let order = 0;
 let ActiveCoil = 0;
+let currentPos = 0;
+
+const addToCurrentPos = (angle) => {
+  currentPos = ((currentPos + angle) + 360) % 360;
+}
 
 const COMMANDS = {
   'update': () => {
@@ -47,10 +52,11 @@ const COMMANDS = {
         m.set(orderMappedCoilI === i ? 1 : 0)
       });
       ActiveCoil = (ActiveCoil + 1) % COIL_PINS.length;
-      console.log(motorsContext.map((m, i) => ([m.value, m])));
     }, 100);
     setTimeout(() => {
-      clearInterval(job)
+      clearInterval(job);
+      COMMANDS.stop();
+      addToCurrentPos(36);
     }, 2000);
   },
   'left': () => {
@@ -60,10 +66,11 @@ const COMMANDS = {
         m.set(orderMappedCoilI === i ? 1 : 0)
       });
       ActiveCoil = (ActiveCoil + 1) % COIL_PINS.length;
-      console.log(motorsContext.map((m, i) => ([m.value, m])));
     }, 100);
     setTimeout(() => {
-      clearInterval(job)
+      clearInterval(job);
+      COMMANDS.stop();
+      addToCurrentPos(-36);
     }, 2000);
   },
   'stop': () => {
@@ -79,7 +86,8 @@ const COMMANDS = {
       i = i + 1 - (i*2);
     }, 100);
     setTimeout(() => {
-      clearInterval(job)
+      clearInterval(job);
+      COMMANDS.stop();
     }, 2000);
   },
   gflicker: n => {
@@ -110,6 +118,29 @@ const COMMANDS = {
          }
        });
      });
+  },
+  gotoangle: (angle) => {
+    const diff = currentPos - angle;
+    if (diff > 0) {
+      const job = setInterval(() => {
+        const orderMappedCoilI = orders[order][ActiveCoil]
+        motorsContext.map((m, i) => {
+          m.set(orderMappedCoilI === i ? 1 : 0)
+        });
+        ActiveCoil = (ActiveCoil + 1) % COIL_PINS.length;
+      }, 100);
+    } else if (diff < 0) {
+      const job = setInterval(() => {
+        const orderMappedCoilI = orders[order][ActiveCoil]
+        motorsContext.reverse().map((m, i) => {
+          m.set(orderMappedCoilI === i ? 1 : 0)
+        });
+        ActiveCoil = (ActiveCoil + 1) % COIL_PINS.length;
+      }, 100);
+    }
+    setTimeout(() => {
+      clearInterval(job);
+    }, Math.floor(Math.abs(diff) * (200/360)) * 100);
   },
   export: () => {
     return Promise.all(Object.keys(COIL_PINS).map(motorKey => {

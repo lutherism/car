@@ -130,8 +130,13 @@ function keepOpenGatewayConnection() {
               .then(() => {
                 COMMANDS[messageObj.data]();
               });
-            client.send(JSON.stringify({type: 'command-out', data: 'ok'}));
+          } else if (messageObj.data.indexOf('gotoangle') === 0){
+            COMMANDS.export()
+              .then(() => {
+                COMMANDS.gotoangle(Number(messageObj.data.split(':')[1]));
+              });
           }
+          client.send(JSON.stringify({type: 'command-out', data: 'ok'}));
         }
       };
     } catch (e) {
