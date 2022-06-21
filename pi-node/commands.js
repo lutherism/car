@@ -159,6 +159,8 @@ const COMMANDS = {
           const tmpAngle = pendingGotoAngle;
           pendingGotoAngle = null;
           COMMANDS.gotoangle(tmpAngle);
+        } else {
+          COMMANDS.stop();
         }
       }, timeToRotate);
     });
