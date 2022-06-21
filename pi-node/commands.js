@@ -112,7 +112,7 @@ const COMMANDS = {
      });
   },
   export: () => {
-    Promise.all(Object.keys(COIL_PINS).map(motorKey => {
+    return Promise.all(Object.keys(COIL_PINS).map(motorKey => {
       return new Promise((resolve, reject) => {
         const motor = gpio.export(COIL_PINS[motorKey], {
            // When you export a pin, the default direction is out. This allows you to set
