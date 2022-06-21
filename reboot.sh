@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-BASEDIR="/home/pi/projects/car"
+BASEDIR="/home/pi/car"
 nvm use 8
 
 #!/bin/bash
