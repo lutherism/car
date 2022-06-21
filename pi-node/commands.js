@@ -130,6 +130,7 @@ const COMMANDS = {
       pendingGotoAngle = null;
     }
     const diff = currentPos - angle;
+    const timeToRotate = Math.floor(Math.abs(diff) * (200/360)) * 100;
     if (diff > 0) {
       const job = setInterval(() => {
         const orderMappedCoilI = orders[order][ActiveCoil]
@@ -147,6 +148,7 @@ const COMMANDS = {
         ActiveCoil = (ActiveCoil + 1) % COIL_PINS.length;
       }, 100);
     }
+    console.log(`rotating by ${diff} for ${timeToRotate}ms`);
     setTimeout(() => {
       clearInterval(job);
       goToAngleRunnning = false;
@@ -155,7 +157,7 @@ const COMMANDS = {
         pendingGotoAngle = null;
         COMMANDS.gotoangle(tmpAngle);
       }
-    }, Math.floor(Math.abs(diff) * (200/360)) * 100);
+    }, timeToRotate);
   },
   export: () => {
     return Promise.all(Object.keys(COIL_PINS).map(motorKey => {
