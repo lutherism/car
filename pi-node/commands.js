@@ -153,6 +153,7 @@ const COMMANDS = {
       setTimeout(() => {
         clearInterval(job);
         goToAngleRunnning = false;
+        currentPos = angle;
         if (pendingGotoAngle) {
           console.log(`resuming for ${pendingGotoAngle}`);
           const tmpAngle = pendingGotoAngle;
