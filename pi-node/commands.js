@@ -76,8 +76,11 @@ const COMMANDS = {
     }, 2000);
   },
   'stop': () => {
-    motorsContext.map((m, i) => {
-      m.set(0)
+    return new Promise((resolve, reject) => {
+      motorsContext.map((m, i) => {
+        m.set(0);
+      });
+      resolve();
     });
   },
   flicker: n => {
@@ -128,42 +131,44 @@ const COMMANDS = {
     } else {
       goToAngleRunnning = true;
     }
-    COMMANDS.export().then(() => {
-      const diff = currentPos - angle;
-      let job;
-      const timeToRotate = Math.floor(Math.abs(diff) * (200/360)) * 100;
-      if (diff > 0) {
-        job = setInterval(() => {
-          const orderMappedCoilI = orders[order][ActiveCoil]
-          motorsContext.map((m, i) => {
-            m.set(orderMappedCoilI === i ? 1 : 0)
-          });
-          ActiveCoil = (ActiveCoil + 1) % COIL_PINS.length;
-        }, 100);
-      } else if (diff < 0) {
-        job = setInterval(() => {
-          const orderMappedCoilI = orders[order][ActiveCoil]
-          motorsContext.reverse().map((m, i) => {
-            m.set(orderMappedCoilI === i ? 1 : 0)
-          });
-          ActiveCoil = (ActiveCoil + 1) % COIL_PINS.length;
-        }, 100);
-      }
-      console.log(`rotating by ${diff} for ${timeToRotate}ms`);
-      setTimeout(() => {
-        clearInterval(job);
-        goToAngleRunnning = false;
-        currentPos = angle;
-        if (pendingGotoAngle) {
-          console.log(`resuming for ${pendingGotoAngle}`);
-          const tmpAngle = pendingGotoAngle;
-          pendingGotoAngle = null;
-          COMMANDS.gotoangle(tmpAngle);
-        } else {
-          COMMANDS.stop();
+    COMMANDS.stop()
+      .then(() => COMMANDS.export())
+      .then(() => {
+        const diff = currentPos - angle;
+        let job;
+        const timeToRotate = Math.floor(Math.abs(diff) * (200/360)) * 100;
+        if (diff < 0) {
+          job = setInterval(() => {
+            const orderMappedCoilI = orders[order][ActiveCoil]
+            motorsContext.map((m, i) => {
+              m.set(orderMappedCoilI === i ? 1 : 0)
+            });
+            ActiveCoil = (ActiveCoil + 1) % COIL_PINS.length;
+          }, 100);
+        } else if (diff > 0) {
+          job = setInterval(() => {
+            const orderMappedCoilI = orders[order][ActiveCoil]
+            motorsContext.reverse().map((m, i) => {
+              m.set(orderMappedCoilI === i ? 1 : 0)
+            });
+            ActiveCoil = (ActiveCoil + 1) % COIL_PINS.length;
+          }, 100);
         }
-      }, timeToRotate);
-    });
+        console.log(`rotating by ${diff} for ${timeToRotate}ms`);
+        setTimeout(() => {
+          clearInterval(job);
+          goToAngleRunnning = false;
+          currentPos = angle;
+          if (pendingGotoAngle) {
+            console.log(`resuming for ${pendingGotoAngle}`);
+            const tmpAngle = pendingGotoAngle;
+            pendingGotoAngle = null;
+            COMMANDS.gotoangle(tmpAngle);
+          } else {
+            COMMANDS.stop();
+          }
+        }, timeToRotate);
+      });
   },
   export: () => {
     return Promise.all(Object.keys(COIL_PINS).map(motorKey => {
