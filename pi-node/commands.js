@@ -24,6 +24,8 @@ let motorsContext = [];
 let order = 0;
 let ActiveCoil = 0;
 let currentPos = 0;
+let pendingGotoAngle = null;
+let goToAngleRunnning = false;
 
 const addToCurrentPos = (angle) => {
   currentPos = ((currentPos + angle) + 360) % 360;
@@ -120,6 +122,13 @@ const COMMANDS = {
      });
   },
   gotoangle: (angle) => {
+    if (goToAngleRunnning) {
+      pendingGotoAngle = angle;
+      return;
+    } else {
+      goToAngleRunnning = true;
+      pendingGotoAngle = null;
+    }
     const diff = currentPos - angle;
     if (diff > 0) {
       const job = setInterval(() => {
@@ -140,6 +149,12 @@ const COMMANDS = {
     }
     setTimeout(() => {
       clearInterval(job);
+      goToAngleRunnning = false;
+      if (pendingGotoAngle) {
+        const tmpAngle = pendingGotoAngle;
+        pendingGotoAngle = null;
+        COMMANDS.gotoangle(tmpAngle);
+      }
     }, Math.floor(Math.abs(diff) * (200/360)) * 100);
   },
   export: () => {
