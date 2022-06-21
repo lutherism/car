@@ -97,6 +97,7 @@ function keepOpenGatewayConnection() {
           client.send(JSON.stringify({type: 'identify-connection', deviceUuid: DeviceData.deviceUuid}));
           if (client.readyState === client.OPEN) {
             ptyProcess.on('data', (data) => {
+              console.log('pyt out data');
               client.send(JSON.stringify({
                 type: 'pty-out',
                 data,
