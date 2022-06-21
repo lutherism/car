@@ -136,7 +136,7 @@ function keepOpenGatewayConnection() {
                 COMMANDS.gotoangle(Number(messageObj.data.split(':')[1]));
               });
           }
-          client.send(JSON.stringify({type: 'command-out', data: 'ok'}));
+          //client.send(JSON.stringify({type: 'command-out', data: 'ok'}));
         }
       };
     } catch (e) {

@@ -153,6 +153,7 @@ const COMMANDS = {
       clearInterval(job);
       goToAngleRunnning = false;
       if (pendingGotoAngle) {
+        console.log(`resuming for ${pendingGotoAngle}`);
         const tmpAngle = pendingGotoAngle;
         pendingGotoAngle = null;
         COMMANDS.gotoangle(tmpAngle);
