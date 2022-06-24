@@ -1,0 +1,46 @@
+var path = require('path');
+var fs = require('fs');
+var {authRequest} = require('./api.js');
+
+const filesToUpload = ['run.log', 'run-err.log', 'reboot.log'];
+const logsRootDir = 'tmp';
+const deleteLogsOnUpload = true;
+const dataFilePath = __dirname + '/openroboticsdata/data.json';
+const gapBetweenUploads = 1000 * 60 * 60 * 24;
+
+function uploadAndClearLogs() {
+  const deviceData = fs.readFileSync(dataFilePath);
+  const deviceDataJSON = JSON.parse(deviceData);
+  const logTime = Date.now()
+
+  return Promise.all(filesToUpload.map(fileName => {
+    const targetLogFile = __dirname + '/../' + logsRootDir + '/' + fileName;
+    fileContent = fs.readFileSync(targetLogFile);
+    return authRequest({
+      url: '/device-log',
+      method: 'post',
+      body: JSON.stringify({
+        key: deviceDataJSON.deviceUuid + '/' + logTime + '/' + fileName,
+        body: fileContent.toString()
+      })
+    }).catch((e) => {
+      console.error(e);
+    });
+  }));
+}
+
+function syncLogsIfAfterGap() {
+  const deviceData = fs.readFileSync(dataFilePath);
+  const deviceDataJSON = JSON.parse(deviceData);
+  if (!deviceDataJSON.lastLogUpload ||
+    Date.now() - deviceDataJSON.lastLogUpload > gapBetweenUploads) {
+    uploadAndClearLogs().then(() => {
+      filesToUpload.map(fileName => {
+        const targetLogFile = __dirname + '/../' + logsRootDir + '/' + fileName;
+        fs.unlink(targetLogFile);
+      });
+    });
+  }
+}
+
+module.exports = {syncLogsIfAfterGap, uploadAndClearLogs}

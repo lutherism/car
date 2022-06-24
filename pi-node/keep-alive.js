@@ -6,6 +6,7 @@ var os = require('os');
 var pty = require('node-pty');
 var COMMANDS = require('./commands.js');
 const { Duplex } = require('stream');
+var {syncLogsIfAfterGap} = require('./upload-logs');
 
 var shell = os.platform() === 'win32' ? 'powershell.exe' : 'bash';
 
@@ -18,7 +19,7 @@ var ptyProcess = pty.spawn(shell, [], {
   name: 'xterm-color',
   cols: 80,
   rows: 30,
-  cwd: process.env.HOME,
+  cwd: `${process.env.HOME}/car`,
   env: process.env
 });
 
@@ -52,18 +53,18 @@ function recursiveConnect() {
 
 recursiveConnect();
 
-let DeviceData = {};
-
-DeviceData = JSON.parse(fs.readFileSync(__dirname + '/openroboticsdata/data.json'));
+let DeviceData = JSON.parse(fs.readFileSync(__dirname + '/openroboticsdata/data.json'));
 
 let interval = null;
+
+let version = fs.readFileSync(__dirname + '/../.git/refs/heads/master').toString();
 
 function intervalHeartbeat(msDelay = 8000) {
   const heartPump = () => {
     const hb = {
       deviceUuid: DeviceData.deviceUuid,
       payloadJSON: JSON.stringify({
-        version:  fs.readFileSync(__dirname + '/../.git/refs/heads/master').toString(),
+        version: version,
         type: "wifi-motor"
       })
     };
@@ -71,9 +72,8 @@ function intervalHeartbeat(msDelay = 8000) {
       uri: `${API_URL}/api/device/state`,
       json: true,
       body: hb
-    }, (err, resp) => {
-      console.log(`Finished Heartbeat ${Date.now()}`);
     });
+    syncLogsIfAfterGap();
   };
   heartPump();
   clearInterval(interval);
@@ -93,7 +93,7 @@ function keepOpenGatewayConnection() {
       });
 
       client.onopen = function() {
-          console.log(`WebSocket Client Connected to ${WS_URL}`);
+          console.log(`WebSocket Client Connected to ${WS_URL} ${client.readyState}`);
           client.send(JSON.stringify({type: 'identify-connection', deviceUuid: DeviceData.deviceUuid}));
           if (client.readyState === client.OPEN) {
             ptyProcess.on('data', (data) => {
@@ -103,7 +103,7 @@ function keepOpenGatewayConnection() {
                 data,
                 deviceUuid: DeviceData.deviceUuid}));
             });
-            ptyProcess.write('sudo -u pi -i && cd car');
+            ptyProcess.write('sudo -u pi -i');
             ptyProcess.write('echo \'' +
               `Welcome to Open Robotics Terminal! Device UUID: ${DeviceData.deviceUuid}`
               + '`\'\r');
