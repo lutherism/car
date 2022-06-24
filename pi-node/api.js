@@ -16,7 +16,6 @@ function authRequest(options) {
         'Cookies': ((options.headers || {}).Cookies || '') + '_oss=' + sessionUuid + ';'
       })
     });
-    console.log(filledOptions)
     request(filledOptions, (res, err) => {
       if (err) {
         return reject(err);

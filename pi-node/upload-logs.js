@@ -15,7 +15,11 @@ function uploadAndClearLogs() {
 
   return Promise.all(filesToUpload.map(fileName => {
     const targetLogFile = __dirname + '/../' + logsRootDir + '/' + fileName;
-    fileContent = fs.readFileSync(targetLogFile);
+    try {
+      fileContent = fs.readFileSync(targetLogFile);
+    } catch (e) {
+      return Promise.resolve();
+    }
     return authRequest({
       url: '/device-log',
       method: 'post',
@@ -23,9 +27,7 @@ function uploadAndClearLogs() {
         key: deviceDataJSON.deviceUuid + '/' + logTime + '/' + fileName,
         body: fileContent.toString()
       })
-    }).catch((e) => {
-      console.error(e);
-    });
+    }).catch(() => Promise.resolve());
   }));
 }
 
@@ -37,8 +39,14 @@ function syncLogsIfAfterGap() {
     uploadAndClearLogs().then(() => {
       filesToUpload.map(fileName => {
         const targetLogFile = __dirname + '/../' + logsRootDir + '/' + fileName;
-        fs.unlink(targetLogFile);
+        try {
+          fs.unlink(targetLogFile);
+        } catch (e) {
+          return Promise.resolve();
+        }
       });
+      deviceDataJSON.lastLogUpload = Date.now();
+      fs.writeFileSync(dataFilePath, JSON.stringify(deviceDataJSON));
     });
   }
 }
