@@ -31,7 +31,7 @@
     "brace": "^0.11.1",
     "browserify": "^16.1.1",
     "del": "^3.0.0",
-    "express": "^4.16.3",
+    "express": "^4.17.3",
     "gpio": "^0.2.7",
     "gulp": "^3.9.1",
     "gulp-sourcemaps": "^2.6.4",
